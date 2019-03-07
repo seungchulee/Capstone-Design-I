@@ -1,2 +1,3 @@
 # Capstone-Design-I
-capstone design 1
+### This is Capstone Design Project
+> For HW#1
