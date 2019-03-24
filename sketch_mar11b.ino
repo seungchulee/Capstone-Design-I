@@ -1,14 +1,16 @@
 #include <ESP8266WiFi.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <time.h>
 
 #define myPeriodic 60 //in sec | Thingspeak pub is 15sec
 #define ONE_WIRE_BUS 2  // DS18B20 on arduino pin2 corresponds to D4 on physical board
-
+int check=0;
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature DS18B20(&oneWire);
 float prevTemp = 0;
 const char* server = "api.thingspeak.com";
+const char* myserver="18.225.6.76";
 String apiKey ="XAD1OOWWCO7290T4";
 const char* MY_SSID = "pwtop_w2"; 
 const char* MY_PWD = "0312233976";
@@ -20,15 +22,51 @@ void setup() {
 
 void loop() {
   float temp;
+  if(check%=2==0){ // send data to thingspeak
+    DS18B20.requestTemperatures();
+    temp = DS18B20.getTempCByIndex(0);
 
-  DS18B20.requestTemperatures(); 
-  temp = DS18B20.getTempCByIndex(0);
-
-  Serial.print(String(sent)+" Temperature: ");
-  Serial.println(temp);
+    Serial.print(String(sent)+" Temperature: ");
+    Serial.println(temp);
   
-  sendTeperatureTS(temp);
+    sendTeperatureTS(temp);
+    
+  }
+  else // send data to my server(amazon web service)
+  {
+     DS18B20.requestTemperatures(); 
+    temp = DS18B20.getTempCByIndex(0);
+    Serial.print("connecting to ");
+    Serial.println(myserver);
+    WiFiClient client;
+    const int httpPort=3000;
+    if(!client.connect(myserver,httpPort)){
+      Serial.println("connection failed");
+      return;
+    }
+
+   String url="/";
+   url+="data";
+   url+="?key=";
+   url+="MY";
+   url+="&field=";
+   url+=temp;
+   Serial.print("Requesting URL: ");
+   Serial.println(url);
+   client.print(String("GET ") + url+" HTTP/1.1\r\n"+"Host: "+myserver+"\r\n"+"Connection: close\r\n\r\n");
+
+   while(client.available())
+   {
+     String line=client.readStringUntil('\r');
+     Serial.print(line);
+   }
+   Serial.println();
+   Serial.println("closing connection");
+    
+  }
+  
   int count = myPeriodic;
+  check++;
   while(count--)
   delay(1000);
 }
