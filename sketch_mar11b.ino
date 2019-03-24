@@ -22,7 +22,7 @@ void setup() {
 
 void loop() {
   float temp;
-  if(check%=2==0){ // send data to thingspeak
+  if(check%2==0){ // send data to thingspeak
     DS18B20.requestTemperatures();
     temp = DS18B20.getTempCByIndex(0);
 
