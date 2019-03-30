@@ -2,6 +2,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <time.h>
+#include "account.h"
 
 #define myPeriodic 60 //in sec | Thingspeak pub is 15sec
 #define ONE_WIRE_BUS 2  // DS18B20 on arduino pin2 corresponds to D4 on physical board
@@ -9,11 +10,7 @@ int check=0;
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature DS18B20(&oneWire);
 float prevTemp = 0;
-const char* server = "api.thingspeak.com";
-const char* myserver="18.225.6.76";
-String apiKey ="XAD1OOWWCO7290T4";
-const char* MY_SSID = "pwtop_w2"; 
-const char* MY_PWD = "0312233976";
+
 int sent = 0;
 void setup() {
   Serial.begin(115200);
