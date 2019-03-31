@@ -1,0 +1,118 @@
+  <html>
+      <head>
+  
+          <style>
+              body{
+                   background-color:#808F97;
+               }
+               table{
+  
+                  text-align:center;
+                  border-spacing:5px;
+                 border-collapse:seperate;
+             }
+             table td{
+                 vertical-align:middle;
+                 width:200px;
+                 background:#91FFC3;
+             }
+             table th{
+                 width:200px;
+                 background:#CCC;
+             }
+ 
+         </style>
+ 
+         <meta charset="UTF-8">
+         <script type="text/javascript" src="https://www.gstatic.com/charts/l    oader.js"></script>
+ 
+         <script type="text/javascript">
+ 
+         google.charts.load('current',{'packages':['line']});
+         google.charts.setOnLoadCallback(drawChart);
+         function drawChart(){
+             var data=new google.visualization.DataTable();
+             <%HEADER%>
+                 data.addRows([
+                 <%DATA%>
+                 ]);
+             var options={
+                 backgroundColor:'#808F97',
+                 titleTextStyle:{
+                     fontSize:30,
+                     color:'white'
+                 },
+                 chart:{
+                     title:'승철이의 방 온도 그래프',
+                     subtitle:'20141561 이승철'
+                 },
+                 width:1331,
+                 height:650,
+                 hAxis:{
+                     "title":"Date/Time",
+                     "format":'yyyy-MM-dd HH:mm',
+                     textStyle:{
+                         fontSize:10,
+                         color:'white'
+                     },
+                     baselineColor:'white'
+                 },
+                 vAxis:{
+                     textStyle:{
+                         fontSize:10,
+                         color:'white'
+                     },
+                     gridlines:{
+                         color:'#8898A1' 
+                     },
+                     baselineColor:'#8898A1',
+                     "title":"Celcius",  
+                     "format":"#,##00.00 'C",
+                     viewWindowMode:'explicit',
+                     viewWindow:{
+                         max:26,
+                         min:12
+                     }
+                                     
+                 },
+                 legend:{
+                     textStyle:{
+                         fonrSize:7,
+                         color:'white'
+                     }
+                 },
+                 series:{
+                     0:{
+                         color:'#91FFC3'
+                     }
+                 }
+             };
+             var chart = new google.charts.Line(document.getElementById('line    _top_x'));
+             chart.draw(data,google.charts.Line.convertOptions(options));
+         }
+         </script>
+ 
+         </head>
+         <body>
+ 
+             <div id="line_top_x"></div>
+
+                <table style=padding-left:415>
+
+                <tr>
+                    <th>시작시간</th>
+                    <th>종료시간</th>
+                </tr>
+                <tr>
+                    <td><%FIRST%></td>
+                    <td><%LAST%></td>
+                </tr>
+            </table>
+
+
+                <a href="https://github.com/seungchulee/Capstone-Design-I/bl    ob/master/sketch_mar11b.ino" target="_blank" title="아두이노 소스코드 깃허브
+     url입니다."><font size="6em" color = "#91FFC3"> 1. Arduino Source Code Gith    ub URL</font></a><br>
+            <a href="https://github.com/seungchulee/Capstone-Design-I/blob/master/web.js" target="_blank" title="웹 페이지를 >    구성하는 nodejs url입니다."><font size="6em" color="#91FFC3">2. Nodejs Sourc    e Codede Github URL </font></a>
+        </body>
+</html>
+
