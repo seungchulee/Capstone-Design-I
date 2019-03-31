@@ -16,7 +16,7 @@ function insert_sensor(value,ip){
 
     var connection=account.call_connect();
     connection.connect();
-    var query=connection.query('insert into sensors set?',obj,function(err,r    ows,cols){
+    var query=connection.query('insert into sensors set?',obj,function(err,rows,cols){
             if(err) throw err;
             console.log("database insertion ok=%j",obj);
         });
@@ -26,7 +26,7 @@ function insert_sensor(value,ip){
  
 var seq=0
 app.get('/log',function(req,res) {
-  fs.appendFile('log.txt',time+JSON.stringify(req.query.field)+"\n",function    (err) {
+  fs.appendFile('log.txt',time+JSON.stringify(req.query.field)+"\n",function(err) {
     if(err) throw err
      console.log("%j",req.query.field)
      res.end(time + " "+JSON.stringify(req.query))
@@ -65,7 +65,7 @@ app.get('/data',function(req,res){
      r=req.query;
      insert_sensor(r.field,req.connection.remoteAddress);
      //MODIFYING 
-     fs.appendFile('temperature.txt',time+req.query.field+"\n",function(err)     {
+     fs.appendFile('temperature.txt',time+req.query.field+"\n",function(err) {
          if(err) throw err;
          console.log(time+req.query.field)
          res.end(time+req.query.field)
@@ -121,7 +121,7 @@ app.get('/data',function(req,res){
             {
                 r=rows[i];
                 hour=r.time.getHours()+9;
-                data+=comma+"[new Date("+r.time.getFullYear()+","+r.time.get    Month()+","+r.time.getDate()+","+hour+","+r.time.getMinutes()+","+r.time.get    Seconds()+"),"+r.value+"]";
+                data+=comma+"[new Date("+r.time.getFullYear()+","+r.time.getMonth()+","+r.time.getDate()+","+hour+","+r.time.getMinutes()+","+r.time.get    Seconds()+"),"+r.value+"]";
                 comma=",";
             }
             var temp1=rows[0];
